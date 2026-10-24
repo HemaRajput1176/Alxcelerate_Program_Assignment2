@@ -205,88 +205,9 @@ lowest recall or F1. - Which class pairs appear most often in the
 confusion matrix. - Whether the model's inputs would be available at the
 actual time a prediction is needed.
 
-## 10. Questions and answers
 
-### 1. Why is this a classification problem?
 
-Because `Load_Type` contains three discrete categories. The model
-predicts a category rather than a continuous number.
-
-### 2. Why not use a random train-test split?
-
-The observations have timestamps, and the assignment asks for the latest
-month as the test set. A chronological split avoids training on later
-observations when evaluating an earlier period.
-
-### 3. Why use November for validation and December for testing?
-
-November helps compare models and select one using data that is later
-than the training period. December remains separate for the final
-evaluation, reducing the risk of choosing a model based on its test
-score.
-
-### 4. Why do we need a baseline model?
-
-A baseline shows how well a very simple strategy performs. More complex
-models should be judged against that reference, not only by their own
-accuracy.
-
-### 5. Why report macro-F1 as well as accuracy?
-
-Accuracy can hide poor performance on less frequent classes. Macro-F1
-gives Light, Medium, and Maximum load equal weight, making it easier to
-see whether performance is balanced.
-
-### 6. Why use median imputation?
-
-The median is relatively resistant to extreme values and provides a
-simple way to fill missing numerical measurements. It is fitted inside
-the pipeline so that validation and test data do not influence the
-imputation value.
-
-### 7. Why scale features for Logistic Regression but not the tree models?
-
-Scaling helps Logistic Regression because its optimization can be
-sensitive to different feature scales. Tree-based models split on
-feature values and generally do not require standard scaling.
-
-### 8. Why create `time_sin` and `time_cos`?
-
-Time of day is cyclical: 23:45 is close to 00:00, even though their raw
-hour values are far apart. Sine and cosine features represent that
-wrap-around relationship.
-
-### 9. Why exclude raw `NSM`?
-
-Some `NSM` values do not agree with the timestamp-derived seconds from
-midnight. Using inconsistent time information could confuse the model,
-so the notebook derives time features from the parsed timestamp and
-excludes raw `NSM` from the predictors.
-
-### 10. What if December performance is much worse or much better than November?
-
-That may indicate month-to-month distribution changes, unusual
-observations, or differences in class patterns. Check the class
-distribution and feature ranges by month before drawing conclusions; a
-single month is not enough to identify the cause with certainty.
-
-### 11. What if `Usage_kWh` almost perfectly predicts `Load_Type`?
-
-Check whether the labels were originally assigned using consumption
-thresholds. If they were, the model may mainly be learning the labelling
-rule. That can be useful for reproducing the labels, but it does not
-necessarily prove the model can predict future load conditions
-independently.
-
-### 12. What would you improve before using this model in production?
-
-Test on more than one later time period, monitor changes in input data
-and class performance, confirm that every feature is available at
-prediction time, and work with domain experts to verify how `Load_Type`
-was defined. Production use would also need reliability, monitoring, and
-operational requirements beyond this assignment.
-
-## 11. Limitations
+## 10. Limitations
 
 -   The evaluation uses one final month, so results may not represent
     every season or operating condition.
@@ -297,7 +218,7 @@ operational requirements beyond this assignment.
 -   Predictive performance on this dataset does not, by itself,
     establish readiness for deployment in a live power system.
 
-## 12. How to run
+## 11. How to run
 
 1.  Open the notebook in Google Colab or Jupyter.
 2.  Upload `load_data.csv` when prompted, or place it at the configured
